@@ -27,7 +27,7 @@ TOPICS = [
     ("smartposture/gilet_001/status",      0),
 ]
 
-# ─── WebSocket Manager ────────────────────────────
+#WebSocket Manager
 class ConnectionManager:
     def __init__(self):
         self.active_connections: List[WebSocket] = []
@@ -54,7 +54,7 @@ class ConnectionManager:
 
 manager = ConnectionManager()
 
-# ─── Base de données ──────────────────────────────
+#Base de données
 
 DB_PATH = os.path.join(os.path.dirname(__file__), "smartposture.db")
 
@@ -148,7 +148,7 @@ def init_db():
 
 init_db()
 
-# ─── Agrégation + Rétention ───────────────────────
+#Agrégation + Rétention
 def aggreger_et_nettoyer():
     conn = get_db()
     now = datetime.now().isoformat()
@@ -206,16 +206,16 @@ async def tache_agregation():
         await asyncio.sleep(300)  # 5 minutes
         aggreger_et_nettoyer()
 
-# ─── Classification ───────────────────────────────
+# Classification
 def classify_posture(angle: float) -> str:
     if angle < 15:   return "BONNE"
     elif angle < 45: return "ATTENTION"
     else:            return "MAUVAISE"
 
-# ─── Loop asyncio global ──────────────────────────
+#Loop asyncio global
 loop = asyncio.get_event_loop()
 
-# ─── MQTT ─────────────────────────────────────────
+# MQTT
 def on_message(client, userdata, msg):
     try:
         payload_str = msg.payload.decode().strip()
@@ -313,7 +313,7 @@ async def startup():
     asyncio.create_task(tache_agregation())
     print("client MQTT demarre")
 
-# ─── Routes HTTP ──────────────────────────────────
+# Routes HTTP 
 @app.get("/")
 def read_root():
     return {"status": "SmartPosture API v2.0 en ligne"}
@@ -401,7 +401,7 @@ def get_posture_agg():
     conn.close()
     return [dict(row) for row in rows]
 
-# ─── WebSocket ────────────────────────────────────
+#WebSocket 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await manager.connect(websocket)
