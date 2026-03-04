@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+motor
+pydantic
+pydantic[email]
+python-dotenv
+httpx
+requests
+
+# Dev
+black
+ruff
+mypy

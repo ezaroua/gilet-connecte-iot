@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "author": "SmartPosture",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 100, "left": 200, "attrs": {} },
+    { "type": "wokwi-mpu6050", "id": "imu1", "top": 50, "left": 0, "attrs": {} },
+    { "type": "wokwi-resistor", "id": "r1", "top": 80, "left": 500, "rotate": 90, "attrs": { "value": "220" } },
+    { "type": "wokwi-resistor", "id": "r2", "top": 200, "left": 500, "rotate": 90, "attrs": { "value": "220" } },
+    { "type": "wokwi-led", "id": "led1", "top": 60, "left": 600, "attrs": { "color": "red" } },
+    { "type": "wokwi-led", "id": "led2", "top": 180, "left": 600, "attrs": { "color": "green" } }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+
+    [ "imu1:VCC", "esp:3V3",   "red",    [] ],
+    [ "imu1:GND", "esp:GND.1", "black",  [] ],
+    [ "imu1:SDA", "esp:21",    "blue",   [] ],
+    [ "imu1:SCL", "esp:22",    "yellow", [] ],
+
+    [ "esp:26",  "r1:1",      "red",   [] ],
+    [ "r1:2",    "led1:A",    "red",   [] ],
+    [ "led1:C",  "esp:GND.2", "black", [] ],
+
+    [ "esp:27",  "r2:1",      "green", [] ],
+    [ "r2:2",    "led2:A",    "green", [] ],
+    [ "led2:C",  "esp:GND.2", "black", [] ]
+  ],
+  "dependencies": {}
+}
