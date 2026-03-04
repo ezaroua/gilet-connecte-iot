@@ -31,7 +31,7 @@ int compteur  = 0;
 WiFiClient   wifiClient;
 PubSubClient mqttClient(wifiClient);
 
-// ─── WiFi ──────────────────────────────────────────
+// WiFi
 void connectWifi() {
   Serial.print("connexion WiFi");
   WiFi.begin(SSID, PASSWORD);
@@ -44,7 +44,7 @@ void connectWifi() {
   Serial.println(WiFi.localIP());
 }
 
-// ─── MQTT ──────────────────────────────────────────
+//  MQTT
 void connectMQTT() {
   mqttClient.setServer(MQTT_BROKER, MQTT_PORT);
   while (!mqttClient.connected()) {
@@ -61,7 +61,7 @@ void connectMQTT() {
   }
 }
 
-// ─── Simulation MPU ────────────────────────────────
+// Simulation MPU 
 void simulerDonnees() {
   compteur++;
   if (compteur % 20 == 0) scenario = (scenario + 1) % 3;
@@ -103,14 +103,14 @@ void lireMPU() {
   simulerDonnees();
 }
 
-// ─── Simulation température ────────────────────────
+//Simulation température
 float lireTemperature() {
   // Simule entre 36.0 et 38.5 °C
   float temp = 36.0 + (random(0, 25)) / 10.0;
   return temp;
 }
 
-// ─── LEDs + Buzzer ─────────────────────────────────
+//LEDs + Buzzer 
 void gererIndicateurs(String posture) {
   if (posture == "MAUVAISE") {
     digitalWrite(LED_ROUGE, HIGH);
@@ -123,7 +123,7 @@ void gererIndicateurs(String posture) {
   }
 }
 
-// ─── Publication MQTT ──────────────────────────────
+//Publication MQTT
 void publierPosture() {
   String posture;
   if (angle < 15.0)      posture = "BONNE";
@@ -176,7 +176,7 @@ void publierStatus() {
   Serial.println(ok ? "status: up | ok" : "status: up | echec");
 }
 
-// ─── Setup ─────────────────────────────────────────
+// Setup 
 void setup() {
   Serial.begin(115200);
   pinMode(LED_ROUGE, OUTPUT);
@@ -208,5 +208,5 @@ void setup() {
   esp_deep_sleep_start();
 }
 
-// ─── Loop vide (Deep Sleep gere le cycle) ──────────
+// Loop vide (Deep Sleep gere le cycle)
 void loop() {}
